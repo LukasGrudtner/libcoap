@@ -230,6 +230,32 @@ hnd_get_time(coap_context_t  *ctx UNUSED_PARAM,
   }
 }
 
+/* define post handling for sensor data */
+static void
+hnd_post_sensor(coap_context_t *ctx UNUSED_PARAM,
+                struct coap_resource_t *resource,
+                coap_session_t *session UNUSED_PARAM,
+                coap_pdu_t *request,
+                coap_binary_t *token UNUSED_PARAM,
+                coap_string_t *query UNUSED_PARAM,
+                coap_pdu_t *response) {
+
+  size_t size;
+  unsigned char *data;
+
+  (void) coap_get_data(request, &size, &data);
+
+  if (size > 0) {
+     unsigned char buf[3];
+     response->code = COAP_RESPONSE_CODE(201);
+     coap_add_option(response,
+                     COAP_OPTION_CONTENT_FORMAT,
+                     coap_encode_var_safe(buf, sizeof(buf), COAP_MEDIATYPE_TEXT_PLAIN),
+                     buf);
+     coap_add_data(response, size, (const uint8_t *) data);
+  }
+}
+
 static void
 hnd_put_time(coap_context_t *ctx UNUSED_PARAM,
              struct coap_resource_t *resource,
@@ -942,6 +968,11 @@ init_resources(coap_context_t *ctx) {
 
   coap_add_attr(r, coap_make_str_const("ct"), coap_make_str_const("0"), 0);
   coap_add_attr(r, coap_make_str_const("title"), coap_make_str_const("\"General Info\""), 0);
+  coap_add_resource(ctx, r);
+
+  /* define sensor resource */
+  r = coap_resource_init(coap_make_str_const("sensor"), resource_flags);
+  coap_register_handler(r, COAP_REQUEST_POST, hnd_post_sensor);
   coap_add_resource(ctx, r);
 
   /* store clock base to use in /time */

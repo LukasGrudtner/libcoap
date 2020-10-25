@@ -8,6 +8,27 @@
 
 Copyright (C) 2010—2020 by Olaf Bergmann <bergmann@tzi.org> and others
 
+SERVER POST RESOURCE EXAMPLE
+============================
+This version shows an example of how to create a post handling resource on CoAP server. 
+This is version is based in the original libcoap coap-server.c example. The post
+feature can be found in examples/coap-server, using the resource `/sensor`.
+
+## Usage
+### Configuration
+    $ git clone https://github.com/obgm/libcoap --recursive
+    $ cd libcoap
+    $ ./autogen
+    $ ./configure --enable-dtls --with-openssl --disable-shared --disable-doxygen --disable-manpages
+    $ make
+    
+### Establishing a server
+    $ ./coap-server -A 127.0.0.1 -k sesame
+
+### Sending a post
+    $ ./coap-client coap://127.0.0.1/sensor -k sesame -u CoAP -m post -e message
+
+
 ABOUT LIBCOAP
 =============
 

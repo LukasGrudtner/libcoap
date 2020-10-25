@@ -18,9 +18,10 @@ feature can be found in examples/coap-server, using the resource `/sensor`.
 ### Configuration
     $ git clone https://github.com/obgm/libcoap --recursive
     $ cd libcoap
-    $ ./autogen
+    $ ./autogen.sh
     $ ./configure --enable-dtls --with-openssl --disable-shared --disable-doxygen --disable-manpages
     $ make
+    $ cd examples
     
 ### Establishing a server
     $ ./coap-server -A 127.0.0.1 -k sesame

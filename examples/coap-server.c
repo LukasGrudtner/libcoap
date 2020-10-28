@@ -230,6 +230,8 @@ hnd_get_time(coap_context_t  *ctx UNUSED_PARAM,
   }
 }
 
+int counter = 0;
+
 /* define post handling for sensor data */
 static void
 hnd_post_sensor(coap_context_t *ctx UNUSED_PARAM,
@@ -253,6 +255,7 @@ hnd_post_sensor(coap_context_t *ctx UNUSED_PARAM,
                      coap_encode_var_safe(buf, sizeof(buf), COAP_MEDIATYPE_TEXT_PLAIN),
                      buf);
      coap_add_data(response, size, (const uint8_t *) data);
+     printf("Counter = %d\n@\n", counter++);
   }
 }
 
